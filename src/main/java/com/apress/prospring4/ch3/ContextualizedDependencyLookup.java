@@ -9,6 +9,7 @@ public class ContextualizedDependencyLookup implements ManagedComponent {
         this.dependency = (Dependency) container.getDependency("myDependency");
     }
 
+    @Override
     public String toString() {
         return dependency.toString();
     }
