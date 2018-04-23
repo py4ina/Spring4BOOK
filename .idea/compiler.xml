@@ -6,11 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Spring4BOOK" />
+        <module name="Spring-4-BOOK" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Spring4BOOK" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
