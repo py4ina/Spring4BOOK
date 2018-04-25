@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service("messageProvider")
 public class ConfigurabeMessageProvider implements MessageProvider {
+
     private String message;
 
     @Autowired
     public ConfigurabeMessageProvider(String message) {
         this.message = message;
     }
+
     @Override
     public String getMessage() {
         return message;
