@@ -37,7 +37,8 @@ public class InjectSimpleSpel {
         ctx.load("META-INF/spring/app-context-xml.xml");
         ctx.refresh();
 
-        com.apress.prospring4.ch3.xml.InjectSimpleSpel simpleSpel = (com.apress.prospring4.ch3.xml.InjectSimpleSpel)ctx.getBean("injectSimpleSpel");
+        com.apress.prospring4.ch3.xml.InjectSimpleSpel simpleSpel =
+                (com.apress.prospring4.ch3.xml.InjectSimpleSpel)ctx.getBean("injectSimpleSpel");
         System.out.println(simpleSpel);
     }
 }
