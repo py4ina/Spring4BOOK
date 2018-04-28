@@ -28,11 +28,55 @@
           <!--p:programmer="#{injectSimpleConfig.programmer}"-->
           <!--p:ageInSeconds="#{injectSimpleConfig.ageInSeconds}"/>-->
 
-    <bean id="oracle" name="wiseworm" class="com.apress.prospring4.ch3.BookworrnOracle"/>
+    <bean id="oracle" name="wiseworm" class="com.apress.prospring4.ch3.xml.BookwormOracle"/>
 
-    <bean id="injectRef" class="com.apress.prospring4.ch3.xml.InjectRef">
-        <property name="oracle">
-            <ref bean="wiseworm"/>
+    <!--<bean id="injectRef" class="com.apress.prospring4.ch3.xml.InjectRef">-->
+        <!--<property name="oracle">-->
+            <!--<ref bean="wiseworm"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="target1" class="com.apress.prospring4.ch3.SimpleTarget" p:val-ref="injectBeanParent"/>-->
+    <!--<bean id="target2" class="com.apress.prospring4.ch3.SimpleTarget" p:val-ref="injectBean"/>-->
+    <!--<bean id="target3" class="com.apress.prospring4.ch3.SimpleTarget">-->
+        <!--<property name="val">-->
+            <!--<ref parent="injectBean"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="injectBean" class="java.lang.String" c:_0="Child In Bean"/>-->
+
+    <bean id="injectCollection" class="com.apress.prospring4.ch3.xml.CollectionInjection">
+        <property name="map">
+            <map>
+                <entry key="someValue">
+                    <value>Hello World</value>
+                </entry>
+                <entry key="SomeBean">
+                    <ref bean="oracle"/>
+                </entry>
+            </map>
+        </property>
+
+        <property name="props">
+            <props>
+                <prop key="firstName">Chris</prop>
+                <prop key="secondName">Schaefer</prop>
+            </props>
+        </property>
+
+        <property name="set">
+            <set>
+                <value>Hello World!</value>
+                <ref bean="oracle"/>
+            </set>
+        </property>
+
+        <property name="list">
+            <list>
+                <value>Hello World!</value>
+                <ref bean="oracle"/>
+            </list>
         </property>
     </bean>
+
 </beans>

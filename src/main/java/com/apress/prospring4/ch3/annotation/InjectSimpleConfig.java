@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component("injectSimpleConfig")
 public class InjectSimpleConfig {
-    private String name = "John Smith";
-    private int age = 35;
-    private float height = 1.778f;
-    private boolean programmer = true;
-    private Long ageInSeconds = 1009843200L;
+    public String name = "John Smith";
+    public int age = 35;
+    public float height = 1.778f;
+    public boolean programmer = true;
+    public Long ageInSeconds = 1009843200L;
 
 }

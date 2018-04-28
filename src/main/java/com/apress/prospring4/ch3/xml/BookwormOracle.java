@@ -1,6 +1,8 @@
-package com.apress.prospring4.ch3;
+package com.apress.prospring4.ch3.xml;
 
-public class BookworrnOracle implements Oracle {
+import com.apress.prospring4.ch3.Oracle;
+
+public class BookwormOracle implements Oracle {
 
 //    private Encyclopedia encyclopedia;
 //
