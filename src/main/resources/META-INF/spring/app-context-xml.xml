@@ -28,7 +28,7 @@
           <!--p:programmer="#{injectSimpleConfig.programmer}"-->
           <!--p:ageInSeconds="#{injectSimpleConfig.ageInSeconds}"/>-->
 
-    <bean id="oracle" name="wiseworm" class="com.apress.prospring4.ch3.xml.BookwormOracle"/>
+    <!--<bean id="oracle" name="wiseworm" class="com.apress.prospring4.ch3.xml.BookwormOracle"/>-->
 
     <!--<bean id="injectRef" class="com.apress.prospring4.ch3.xml.InjectRef">-->
         <!--<property name="oracle">-->
@@ -79,16 +79,26 @@
         <!--</property>-->
     <!--</bean>-->
 
-    <bean id="helper" class="com.apress.prospring4.ch3.MyHelper" scope="prototype"/>
+    <!--<bean id="helper" class="com.apress.prospring4.ch3.MyHelper" scope="prototype"/>-->
 
-    <bean id="abstractLookupBean" class="com.apress.prospring4.ch3.AbstractLookupDemoBean">
-        <lookup-method name="getMyHelper" bean="helper"/>
+    <!--<bean id="abstractLookupBean" class="com.apress.prospring4.ch3.AbstractLookupDemoBean">-->
+        <!--<lookup-method name="getMyHelper" bean="helper"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="standardLookupDemoBean" class="com.apress.prospring4.ch3.StandardLookupDemoBean">-->
+        <!--<property name="myHelper">-->
+            <!--<ref bean="helper"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="methodReplacer" class="com.apress.prospring4.ch3.FormatMessageReplacer"/>
+
+    <bean id="replacementTarget" class="com.apress.prospring4.ch3.ReplacementTarget">
+        <replaced-method name="formatMessage" replacer="methodReplacer">
+            <arg-type>String</arg-type>
+        </replaced-method>
     </bean>
 
-    <bean id="standardLookupDemoBean" class="com.apress.prospring4.ch3.StandardLookupDemoBean">
-        <property name="myHelper">
-            <ref bean="helper"/>
-        </property>
-    </bean>
+    <bean id="standardTarget" class="com.apress.prospring4.ch3.ReplacementTarget"/>
 
 </beans>
