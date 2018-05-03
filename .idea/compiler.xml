@@ -9,8 +9,5 @@
         <module name="Spring-4-BOOK" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Spring-4-BOOK" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
