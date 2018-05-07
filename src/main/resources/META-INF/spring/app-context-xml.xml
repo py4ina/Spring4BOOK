@@ -117,4 +117,9 @@
     <bean id="targetByType" autowire="byType" class="com.apress.prospring4.ch3.xml.Target" lazy-init="true"/>
     <bean id="targetConstructor" autowire="constructor" class="com.apress.prospring4.ch3.xml.Target" lazy-init="true"/>
 
+    <bean id="inheritParent" class="com.apress.prospring4.ch3.xml.SimpleBean"
+          p:name="Chris Schaefer" p:age="32"/>
+    <bean id="inheritChild" class="com.apress.prospring4.ch3.xml.SimpleBean"
+          parent="inheritParent" p:age="33"/>
+
 </beans>
