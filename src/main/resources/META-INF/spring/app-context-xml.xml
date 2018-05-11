@@ -146,16 +146,21 @@
           <!--class="com.apress.prospring4.ch4.SimpleBeanWithinterface"-->
           <!--p:name="Chris Schaefer"/>-->
 
-    <context:annotation-config/>
-    <bean id="simpleBean1"
-          class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"
-          p:name="Chris Schaefer" p:age="32"/>
+    <!--<context:annotation-config/>-->
+    <!--<bean id="simpleBean1"-->
+          <!--class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"-->
+          <!--p:name="Chris Schaefer" p:age="32"/>-->
 
-    <bean id="simpleBean2"
-          class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"
-          p:age="32"/>
+    <!--<bean id="simpleBean2"-->
+          <!--class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"-->
+          <!--p:age="32"/>-->
 
-    <bean id="simpleBean3"
-          class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"
-          p:name="Chris Schaefer"/>
+    <!--<bean id="simpleBean3"-->
+          <!--class="com.apress.prospring4.ch4.SimpleBeanWithJSR250"-->
+          <!--p:name="Chris Schaefer"/>-->
+
+    <bean id="destructiveBean"
+          class="com.apress.prospring4.ch4.DestructiveBean"
+          destroy-method="destroy"
+          p:filePath="#{systemProperties['java.io.tmpdir']}#{systemProperties['file.separator']}test.txt"/>
 </beans>
