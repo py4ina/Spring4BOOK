@@ -119,5 +119,6 @@ public class PropertyEditorBean {
         ctx.refresh();
 
         PropertyEditorBean bean = (PropertyEditorBean) ctx.getBean("builtInSample");
+        ctx.close();
     }
 }
