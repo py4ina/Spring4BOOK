@@ -198,19 +198,19 @@
           <!--p:digest1-ref="shaDigest"-->
           <!--p:digest2-ref="defaultDigest"/>-->
 
-    <bean id="customEditorConfigurer"
-          class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-        <property name="customEditors">
-            <map>
-                <entry key="com.apress.prospring4.ch4.Name"
-                       value="com.apress.prospring4.ch4.NamePropertyEditor"/>
-            </map>
-        </property>
-    </bean>
+    <!--<bean id="customEditorConfigurer"-->
+          <!--class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
+        <!--<property name="customEditors">-->
+            <!--<map>-->
+                <!--<entry key="com.apress.prospring4.ch4.Name"-->
+                       <!--value="com.apress.prospring4.ch4.NamePropertyEditor"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
 
-    <bean id="exampleBean" class="com.apress.prospring4.ch4.CustomEditorExample"
-          p:name="Chris Schaefer">
-    </bean>
+    <!--<bean id="exampleBean" class="com.apress.prospring4.ch4.CustomEditorExample"-->
+          <!--p:name="Chris Schaefer">-->
+    <!--</bean>-->
 
     <!--<util:list id="propertyEditorRegistrarsList">-->
         <!--<bean class="com.apress.prospring4.ch4.PropertyEditorBean$CustomPropertyEditorRegistrar"/>-->
@@ -235,5 +235,14 @@
         <!--<value>String memЬer 1</value>-->
         <!--<value>String memЬer 2</value>-->
     <!--</util:list>-->
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource"
+          p:basename-ref="basenames"/>
+
+    <util:list id="basenames">
+        <value>button</value>
+        <value>labels</value>
+    </util:list>
 
 </beans>
