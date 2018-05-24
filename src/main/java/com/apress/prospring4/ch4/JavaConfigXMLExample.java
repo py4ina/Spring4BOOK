@@ -8,7 +8,7 @@ public class JavaConfigXMLExample {
         ApplicationContext ctx =
                 new ClassPathXmlApplicationContext("META-INF/spring/app-context-xml.xml");
 
-        MessageRenderer renderer = ctx.getBean("messageRender", MessageRenderer.class);
-        renderer.render();
+//        MessageRenderer renderer = ctx.getBean("messageRender", MessageRenderer.class);
+//        renderer.render();
     }
 }
