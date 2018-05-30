@@ -5,6 +5,7 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd"
        profile="highschool">
 
-    <bean id="foodProviderService" class="com.apress.prospring4.ch4.highschool.FoodProviderServiceImpl"/>
+    <bean id="foodProviderService"
+          class="com.apress.prospring4.ch4.highschool.FoodProviderServiceImpl"/>
 
 </beans>
