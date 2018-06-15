@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 public class StandardOutMessageRenderer implements MessageRenderer {
     @Inject
     @Named("messageProvider")
-    private MessageProvider messageProvider;
+    private MessageProvider messageProvider = null;
 
     @Override
     public void render() {
