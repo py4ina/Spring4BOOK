@@ -35,7 +35,7 @@ public class SecurityExample {
         factory.setTarget(target);
         factory.addAdvice(advice);
 
-        SecureBean proxy = (SecureBean) factory.getProxy();
+        SecureBean proxy = (SecureBean)factory.getProxy();
         return proxy;
     }
 }

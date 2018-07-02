@@ -12,7 +12,7 @@ public class SecurityAdvice implements MethodBeforeAdvice {
     }
 
     @Override
-    public void before(Method method, Object[] args, Object target) throws Throwable {
+    public void before(Method method, Object[] args, Object target) throws Throwable{
         UserInfo user = securityManager.getLoggedOnUser();
 
         if (user == null) {
