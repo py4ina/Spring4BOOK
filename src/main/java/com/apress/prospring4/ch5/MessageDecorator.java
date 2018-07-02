@@ -8,7 +8,7 @@ public class MessageDecorator implements MethodInterceptor {
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         System.out.print("Hello ");
         Object retVal = methodInvocation.proceed();
-        System.out.print("!");
+        System.out.print("!\n");
         return retVal;
     }
 }
