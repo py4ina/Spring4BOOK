@@ -9,4 +9,14 @@ public class SampleBean {
     public void bar() {
         System.out.println("Invoked bar()");
     }
+
+    public String getName() {
+        return "Chris Schaefer";
+    }
+
+    public void setName(String name) {}
+
+    public int setAge() {
+        return 32;
+    }
 }
