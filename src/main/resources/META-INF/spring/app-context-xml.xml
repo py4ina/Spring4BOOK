@@ -2,10 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
    <context:property-placeholder local-override="true" location="classpath:application.properties"/>
 
@@ -14,55 +15,90 @@
       <!--<property name="userHome" value="${user.home}"/>-->
    <!--</bean>-->
 
-   <bean id="myBean1" class="com.apress.prospring4.ch5.MyBean">
-      <property name="dep">
-         <ref bean="myDependency1"/>
-      </property>
-   </bean>
+   <!--<bean id="myBean1" class="com.apress.prospring4.ch5.MyBean">-->
+      <!--<property name="dep">-->
+         <!--<ref bean="myDependency1"/>-->
+      <!--</property>-->
+   <!--</bean>-->
 
-   <bean id="myBean2" class="com.apress.prospring4.ch5.MyBean">
-      <property name="dep">
-         <ref bean="myDependency2"/>
-      </property>
-   </bean>
+   <!--<bean id="myBean2" class="com.apress.prospring4.ch5.MyBean">-->
+      <!--<property name="dep">-->
+         <!--<ref bean="myDependency2"/>-->
+      <!--</property>-->
+   <!--</bean>-->
 
-   <bean id="myDependencyTarget" class="com.apress.prospring4.ch5.MyDependency"/>
+   <!--<bean id="myDependencyTarget" class="com.apress.prospring4.ch5.MyDependency"/>-->
 
-   <bean id="myDependency1" class="org.springframework.aop.framework.ProxyFactoryBean">
-      <property name="target">
-         <ref bean="myDependencyTarget"/>
-      </property>
-      <property name="interceptorNames">
-         <list>
-            <value>advice</value>
-         </list>
-      </property>
-   </bean>
+   <!--<bean id="myDependency1" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+      <!--<property name="target">-->
+         <!--<ref bean="myDependencyTarget"/>-->
+      <!--</property>-->
+      <!--<property name="interceptorNames">-->
+         <!--<list>-->
+            <!--<value>advice</value>-->
+         <!--</list>-->
+      <!--</property>-->
+   <!--</bean>-->
 
-   <bean id="myDependency2" class="org.springframework.aop.framework.ProxyFactoryBean">
-      <property name="target">
-         <ref bean="myDependencyTarget"/>
-      </property>
-      <property name="interceptorNames">
-         <list>
-            <value>advisor</value>
-         </list>
-      </property>
-   </bean>
+   <!--<bean id="myDependency2" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+      <!--<property name="target">-->
+         <!--<ref bean="myDependencyTarget"/>-->
+      <!--</property>-->
+      <!--<property name="interceptorNames">-->
+         <!--<list>-->
+            <!--<value>advisor</value>-->
+         <!--</list>-->
+      <!--</property>-->
+   <!--</bean>-->
+
+   <!--<bean id="advice" class="com.apress.prospring4.ch5.MyAdvice"/>-->
+
+   <!--<bean id="advisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">-->
+      <!--<property name="advice">-->
+         <!--<ref bean="advice"/>-->
+      <!--</property>-->
+      <!--<property name="pointcut">-->
+         <!--<bean class="org.springframework.aop.aspectj.AspectJExpressionPointcut">-->
+            <!--<property name="expression">-->
+               <!--<value>execution(* foo*(..))</value>-->
+            <!--</property>-->
+         <!--</bean>-->
+      <!--</property>-->
+   <!--</bean>-->
+
+   <!--<bean id="bean" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+      <!--<property name="target">-->
+         <!--<bean class="com.apress.prospring4.ch5.TargetBean">-->
+            <!--<property name="name">-->
+               <!--<value>Chris Schaefer</value>-->
+            <!--</property>-->
+         <!--</bean>-->
+      <!--</property>-->
+      <!--<property name="interceptorNames">-->
+         <!--<list>-->
+            <!--<value>advisor</value>-->
+         <!--</list>-->
+      <!--</property>-->
+      <!--<property name="proxyTargetClass">-->
+         <!--<value>true</value>-->
+      <!--</property>-->
+   <!--</bean>-->
+
+   <!--<bean id="advisor" class="com.apress.prospring4.ch5.IsModifiedAdvisor"/>-->
+
+   <aop:config>
+      <aop:pointcut id="fooExecution" expression="execution(* com.apress.prospring4.ch5..foo*(int))"/>
+
+      <aop:aspect ref="advice">
+         <aop:before pointcut-ref="fooExecution" method="simpleBeforeAdvice"/>
+      </aop:aspect>
+   </aop:config>
 
    <bean id="advice" class="com.apress.prospring4.ch5.MyAdvice"/>
 
-   <bean id="advisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-      <property name="advice">
-         <ref bean="advice"/>
-      </property>
-      <property name="pointcut">
-         <bean class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
-            <property name="expression">
-               <value>execution(* foo*(..))</value>
-            </property>
-         </bean>
-      </property>
-   </bean>
+   <bean id="myDependency" class="com.apress.prospring4.ch5.MyDependency"/>
 
+   <bean id="myBean" class="com.apress.prospring4.ch5.MyBean">
+      <property name="dep" ref="myDependency"/>
+   </bean>
 </beans>

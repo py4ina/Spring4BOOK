@@ -41,19 +41,20 @@
             <version>1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjrt &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.aspectj</groupId>-->
+            <!--<artifactId>aspectjrt</artifactId>-->
+            <!--<version>1.8.0</version>-->
+        <!--</dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
         <dependency>
             <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.0</version>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.8.0</version>
-        </dependency>
 
     </dependencies>
 

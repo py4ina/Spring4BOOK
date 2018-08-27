@@ -5,6 +5,10 @@ public class MyDependency {
         System.out.println("foo()");
     }
 
+    public void foo(int intValue) {
+        System.out.println("foo(int): " + intValue);
+    }
+
     public void bar() {
         System.out.println("bar()");
     }
