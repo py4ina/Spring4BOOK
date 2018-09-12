@@ -15,7 +15,7 @@ public class PlainContactDao implements ContactDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/prospring4_ch6", "prospring4", "prospring4");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/Spring_4_BOOK", "py4ina", "Reper245!");
     }
 
     private void closeConnection(Connection connection) {
@@ -53,7 +53,48 @@ public class PlainContactDao implements ContactDao {
         } finally {
             closeConnection(connection);
         }
-        return null;
+        return result;
+    }
+
+    @Override
+    public void insert(Contact contact) {
+        Connection connection = null;
+        try{
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("insert into CONTACT (first_name, last_name, birth_date) value (?, ?, ?)"
+                    , Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, contact.getFirstName());
+            statement.setString(2, contact.getLastName());
+            statement.setDate(3, contact.getBirthDate());
+            statement.execute();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                contact.setId(generatedKeys.getLong(1));
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public void delete(Long contactId) {
+        Connection connection = null;
+        try{
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("delete from CONTACT where id=?");
+            statement.setLong(1, contactId);
+            statement.execute();
+
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
     }
 
     @Override
@@ -72,17 +113,7 @@ public class PlainContactDao implements ContactDao {
     }
 
     @Override
-    public void insert(Contact contact) {
-
-    }
-
-    @Override
     public void update(Contact contact) {
-
-    }
-
-    @Override
-    public void delete(Long contactId) {
 
     }
 }
