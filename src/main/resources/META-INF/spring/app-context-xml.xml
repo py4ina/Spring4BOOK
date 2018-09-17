@@ -1,109 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-   <!--<context:property-placeholder local-override="true" location="classpath:application.properties"/>-->
-
-   <!--&lt;!&ndash;<bean id="appProperty" class="com.apress.prospring4.ch4.AppProperty">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="applicationHome" value="${application.home}"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="userHome" value="${user.home}"/>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="myBean1" class="com.apress.prospring4.ch5.MyBean">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="dep">&ndash;&gt;-->
-         <!--&lt;!&ndash;<ref bean="myDependency1"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="myBean2" class="com.apress.prospring4.ch5.MyBean">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="dep">&ndash;&gt;-->
-         <!--&lt;!&ndash;<ref bean="myDependency2"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="myDependencyTarget" class="com.apress.prospring4.ch5.MyDependency"/>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="myDependency1" class="org.springframework.aop.framework.ProxyFactoryBean">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="target">&ndash;&gt;-->
-         <!--&lt;!&ndash;<ref bean="myDependencyTarget"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="interceptorNames">&ndash;&gt;-->
-         <!--&lt;!&ndash;<list>&ndash;&gt;-->
-            <!--&lt;!&ndash;<value>advice</value>&ndash;&gt;-->
-         <!--&lt;!&ndash;</list>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="myDependency2" class="org.springframework.aop.framework.ProxyFactoryBean">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="target">&ndash;&gt;-->
-         <!--&lt;!&ndash;<ref bean="myDependencyTarget"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="interceptorNames">&ndash;&gt;-->
-         <!--&lt;!&ndash;<list>&ndash;&gt;-->
-            <!--&lt;!&ndash;<value>advisor</value>&ndash;&gt;-->
-         <!--&lt;!&ndash;</list>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="advice" class="com.apress.prospring4.ch5.MyAdvice"/>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="advisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="advice">&ndash;&gt;-->
-         <!--&lt;!&ndash;<ref bean="advice"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="pointcut">&ndash;&gt;-->
-         <!--&lt;!&ndash;<bean class="org.springframework.aop.aspectj.AspectJExpressionPointcut">&ndash;&gt;-->
-            <!--&lt;!&ndash;<property name="expression">&ndash;&gt;-->
-               <!--&lt;!&ndash;<value>execution(* foo*(..))</value>&ndash;&gt;-->
-            <!--&lt;!&ndash;</property>&ndash;&gt;-->
-         <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="bean" class="org.springframework.aop.framework.ProxyFactoryBean">&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="target">&ndash;&gt;-->
-         <!--&lt;!&ndash;<bean class="com.apress.prospring4.ch5.TargetBean">&ndash;&gt;-->
-            <!--&lt;!&ndash;<property name="name">&ndash;&gt;-->
-               <!--&lt;!&ndash;<value>Chris Schaefer</value>&ndash;&gt;-->
-            <!--&lt;!&ndash;</property>&ndash;&gt;-->
-         <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="interceptorNames">&ndash;&gt;-->
-         <!--&lt;!&ndash;<list>&ndash;&gt;-->
-            <!--&lt;!&ndash;<value>advisor</value>&ndash;&gt;-->
-         <!--&lt;!&ndash;</list>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-      <!--&lt;!&ndash;<property name="proxyTargetClass">&ndash;&gt;-->
-         <!--&lt;!&ndash;<value>true</value>&ndash;&gt;-->
-      <!--&lt;!&ndash;</property>&ndash;&gt;-->
-   <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-
-   <!--&lt;!&ndash;<bean id="advisor" class="com.apress.prospring4.ch5.IsModifiedAdvisor"/>&ndash;&gt;-->
-
-   <!--<aop:config>-->
-      <!--<aop:pointcut id="fooExecution" expression="execution(* com.apress.prospring4.ch5..foo*(int))"/>-->
-
-      <!--<aop:aspect ref="advice">-->
-         <!--<aop:before pointcut-ref="fooExecution" method="simpleBeforeAdvice"/>-->
-      <!--</aop:aspect>-->
-   <!--</aop:config>-->
-
-   <!--<bean id="advice" class="com.apress.prospring4.ch5.MyAdvice"/>-->
-
-   <!--<bean id="myDependency" class="com.apress.prospring4.ch5.MyDependency"/>-->
-
-   <!--<bean id="myBean" class="com.apress.prospring4.ch5.MyBean">-->
-      <!--<property name="dep" ref="myDependency"/>-->
-   <!--</bean>-->
+          http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
    <jdbc:embedded-database id="dataSource" type="H2">
       <jdbc:script location="classpath:META-INF/sql/schema.sql"/>
       <jdbc:script location="classpath:META-INF/sql/test-data.sql"/>
    </jdbc:embedded-database>
+
+   <bean id="contactDao" class="com.apress.prospring4.ch6.JdbcContactDao" p:dataSource="dataSource"/>
 </beans>
