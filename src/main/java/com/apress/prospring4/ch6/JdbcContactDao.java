@@ -11,14 +11,21 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
 
+    @Override
+    public String findFirstNameById(Long id) {
+        return jdbcTemplate.queryForObject(
+                "select first_name from SPRING_4_BOOK.CONTACT where id = ?",
+                new Object[]{id}, String.class);
+    }
+
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-        
+
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
-        
+
         MySQLErrorCodesTranslator errorTranslator = new MySQLErrorCodesTranslator();
-        
+
         errorTranslator.setDataSource(dataSource);
         jdbcTemplate.setExceptionTranslator(errorTranslator);
         this.jdbcTemplate = jdbcTemplate;
@@ -28,6 +35,9 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         if (dataSource == null){
             throw new BeanCreationException("Must set dataSource on ContactDao");
+        }
+        if (jdbcTemplate == null){
+            throw new BeanCreationException("Null JdbcTemplate on ContactDao");
         }
     }
 
@@ -43,11 +53,6 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
 
     @Override
     public String findLastNameById(Long id) {
-        return null;
-    }
-
-    @Override
-    public String findFirstNameById(Long id) {
         return null;
     }
 

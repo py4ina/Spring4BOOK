@@ -12,5 +12,6 @@
       <jdbc:script location="classpath:META-INF/sql/test-data.sql"/>
    </jdbc:embedded-database>
 
-   <bean id="contactDao" class="com.apress.prospring4.ch6.JdbcContactDao" p:dataSource="dataSource"/>
+   <bean id="contactDao" class="com.apress.prospring4.ch6.JdbcContactDao"
+         p:dataSource-ref="dataSource"/>
 </beans>
