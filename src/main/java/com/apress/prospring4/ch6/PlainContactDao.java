@@ -57,6 +57,11 @@ public class PlainContactDao implements ContactDao {
     }
 
     @Override
+    public List<Contact> findAllWithDetail() {
+        return null;
+    }
+
+    @Override
     public void insert(Contact contact) {
         Connection connection = null;
         try{

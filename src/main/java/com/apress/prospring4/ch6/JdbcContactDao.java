@@ -2,14 +2,47 @@ package com.apress.prospring4.ch6;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcContactDao implements ContactDao, InitializingBean {
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public String findLastNameById(Long id) {
+        String sql = "select last_name from CONTACT where id = :contactId";
+
+        Map<String, Object> namedParameters = new HashMap<>();
+        namedParameters.put("contactId", id);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
+    }
+
+    @Override
+    public List<Contact> findAllWithDetail() {
+        String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
+        return namedParameterJdbcTemplate.query(sql, new ContactWithDetailExtractor());
+    }
+
+    @Override
+    public List<Contact> findAll() {
+        String sql = "select * from CONTACT";
+        return namedParameterJdbcTemplate.query(sql, new ContactMapper());
+    }
 
     @Override
     public String findFirstNameById(Long id) {
@@ -21,14 +54,9 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
-        MySQLErrorCodesTranslator errorTranslator = new MySQLErrorCodesTranslator();
-
-        errorTranslator.setDataSource(dataSource);
-        jdbcTemplate.setExceptionTranslator(errorTranslator);
-        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -36,23 +64,13 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
         if (dataSource == null){
             throw new BeanCreationException("Must set dataSource on ContactDao");
         }
-        if (jdbcTemplate == null){
-            throw new BeanCreationException("Null JdbcTemplate on ContactDao");
+        if (namedParameterJdbcTemplate == null){
+            throw new BeanCreationException("Null namedParameterJdbcTemplate on ContactDao");
         }
     }
 
     @Override
-    public List<Contact> findAll() {
-        return null;
-    }
-
-    @Override
     public List<Contact> findByFirstName(String firstName) {
-        return null;
-    }
-
-    @Override
-    public String findLastNameById(Long id) {
         return null;
     }
 
@@ -69,5 +87,50 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     @Override
     public void delete(Long contactId) {
 
+    }
+
+    private static final class ContactMapper implements RowMapper<Contact> {
+        @Override
+        public Contact mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            Contact contact = new Contact();
+            contact.setId(resultSet.getLong("id"));
+            contact.setFirstName(resultSet.getString("first_name"));
+            contact.setLastName(resultSet.getString("last_name"));
+            contact.setBirthDate(resultSet.getDate("birth_date"));
+            return contact;
+        }
+    }
+
+    private static final class ContactWithDetailExtractor implements ResultSetExtractor<List<Contact>> {
+        @Override
+        public List<Contact> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            Map<Long, Contact> map = new HashMap<>();
+            Contact contact = null;
+
+            while (rs.next()){
+                Long id = rs. getLong ( "id");
+                contact = map. get ( id) ;
+                if (contact == null) {
+                    contact = new Contact();
+                    contact.setId(id);
+                    contact.setFirstName(rs.getString("first_name"));
+                    contact.setLastName(rs.getString("last_name"));
+                    contact.setBirthDate(rs.getDate("birth_date"));
+                    contact.setContactTelDetails(new ArrayList<>());
+                    map.put(id, contact);
+                }
+                Long contactTelDetailId = rs. getLong ( "contact_tel_id");
+                if (contactTelDetailId > 0) {
+                    ContactTelDetail contactTelDetail = new ContactTelDetail();
+                    contactTelDetail.setId(contactTelDetailId);
+                    contactTelDetail.setContactId(id);
+                    contactTelDetail.setTelType(rs.getString("tel_type"));
+                    contactTelDetail.setTelNumber(rs.getString("tel_number"));
+                    contact.getContactTelDetails().add(contactTelDetail);
+                }
+            }
+
+            return new ArrayList<>(map.values());
+        }
     }
 }
