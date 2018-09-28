@@ -1,5 +1,7 @@
 package com.apress.prospring4.ch6;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
@@ -8,7 +10,9 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +21,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository("contactDao")
 public class JdbcContactDao implements ContactDao, InitializingBean {
+    private Log log = LogFactory.getLog(JdbcContactDao.class);
+
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Resource(name = "dataSource")
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public DataSource getDataSource(){
+        return dataSource;
+    }
 
     @Override
     public String findLastNameById(Long id) {
@@ -49,14 +65,6 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
         return jdbcTemplate.queryForObject(
                 "select first_name from SPRING_4_BOOK.CONTACT where id = ?",
                 new Object[]{id}, String.class);
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
