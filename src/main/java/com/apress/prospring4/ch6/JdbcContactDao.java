@@ -26,8 +26,14 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     private Log log = LogFactory.getLog(JdbcContactDao.class);
 
     private DataSource dataSource;
+    private SelectAllContacts selectAllContacts;
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Contact> findAll() {
+        return selectAllContacts.execute();
+    }
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -52,12 +58,6 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
     public List<Contact> findAllWithDetail() {
         String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
         return namedParameterJdbcTemplate.query(sql, new ContactWithDetailExtractor());
-    }
-
-    @Override
-    public List<Contact> findAll() {
-        String sql = "select * from CONTACT";
-        return namedParameterJdbcTemplate.query(sql, new ContactMapper());
     }
 
     @Override
