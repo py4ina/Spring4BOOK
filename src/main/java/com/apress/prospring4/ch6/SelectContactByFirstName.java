@@ -1,16 +1,19 @@
 package com.apress.prospring4.ch6;
 
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
-public class SelectAllContacts extends MappingSqlQuery<Contact> {
-    private static final String SQL_SELECT_ALL_CONTACT = "select id, first_name, last_name, birth_date from CONTACT";
+public class SelectContactByFirstName extends MappingSqlQuery<Contact> {
+    private static final String SQL_FIND_BY_FIRST_NAME = "select id, first_name, last_name, birth_date from CONTACT WHERE first_name = :first_name";
 
-    public SelectAllContacts(DataSource dataSource) {
-        super(dataSource, SQL_SELECT_ALL_CONTACT);
+    public SelectContactByFirstName(DataSource dataSource){
+        super(dataSource, SQL_FIND_BY_FIRST_NAME);
+        super.declareParameter(new SqlParameter("first_name", Types.VARCHAR));
     }
 
     @Override

@@ -22,11 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("contactDao")
-public class JdbcContactDao implements ContactDao, InitializingBean {
-    private Log log = LogFactory.getLog(JdbcContactDao.class);
+public class JdbcContactDao implements ContactDao {
+    private static final Log log = LogFactory.getLog(JdbcContactDao.class);
 
     private DataSource dataSource;
     private SelectAllContacts selectAllContacts;
+    private SelectContactByFirstName selectContactByFirstName;
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -35,9 +36,18 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
         return selectAllContacts.execute();
     }
 
+    @Override
+    public List<Contact> findByFirstName(String firstName) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("first_name", firstName);
+        return selectContactByFirstName.executeByNamedParam(paramMap);
+    }
+
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.selectAllContacts = new SelectAllContacts(dataSource);
+        this.selectContactByFirstName = new SelectContactByFirstName(dataSource);
     }
 
     public DataSource getDataSource(){
@@ -56,7 +66,8 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
 
     @Override
     public List<Contact> findAllWithDetail() {
-        String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
+        String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type " +
+                "from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
         return namedParameterJdbcTemplate.query(sql, new ContactWithDetailExtractor());
     }
 
@@ -65,21 +76,6 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
         return jdbcTemplate.queryForObject(
                 "select first_name from SPRING_4_BOOK.CONTACT where id = ?",
                 new Object[]{id}, String.class);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        if (dataSource == null){
-            throw new BeanCreationException("Must set dataSource on ContactDao");
-        }
-        if (namedParameterJdbcTemplate == null){
-            throw new BeanCreationException("Null namedParameterJdbcTemplate on ContactDao");
-        }
-    }
-
-    @Override
-    public List<Contact> findByFirstName(String firstName) {
-        return null;
     }
 
     @Override

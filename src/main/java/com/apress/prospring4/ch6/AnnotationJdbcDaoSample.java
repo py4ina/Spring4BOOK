@@ -7,11 +7,12 @@ import java.util.List;
 public class AnnotationJdbcDaoSample {
     public static void main(String[] args) {
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-        ctx.load("META-INF/spring/datasource-drivermanager.xml");
+        ctx.load("META-INF/spring/app-context-annotation.xml");
         ctx.refresh();
 
         ContactDao contactDao = ctx.getBean("contactDao", ContactDao.class);
-        List<Contact> contacts = contactDao.findAll();
+
+        List<Contact> contacts = contactDao.findByFirstName("Chris");
         listContacts(contacts);
     }
 
