@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -23,13 +25,15 @@ import java.util.Map;
 
 @Repository("contactDao")
 public class JdbcContactDao implements ContactDao {
-    private static final Log log = LogFactory.getLog(JdbcContactDao.class);
+    private static final Log LOG = LogFactory.getLog(JdbcContactDao.class);
 
     private DataSource dataSource;
     private SelectAllContacts selectAllContacts;
     private SelectContactByFirstName selectContactByFirstName;
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private UpdateContact updateContact;
+    private InsertContact insertContact;
 
     @Override
     public List<Contact> findAll() {
@@ -48,6 +52,8 @@ public class JdbcContactDao implements ContactDao {
         this.dataSource = dataSource;
         this.selectAllContacts = new SelectAllContacts(dataSource);
         this.selectContactByFirstName = new SelectContactByFirstName(dataSource);
+        this.updateContact = new UpdateContact(dataSource);
+        this.insertContact = new InsertContact(dataSource);
     }
 
     public DataSource getDataSource(){
@@ -80,12 +86,27 @@ public class JdbcContactDao implements ContactDao {
 
     @Override
     public void insert(Contact contact) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("first_name", contact.getFirstName());
+        paramMap.put("last_name", contact.getLastName());
+        paramMap.put("birth_date", contact.getBirthDate());
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        insertContact.updateByNamedParam(paramMap, keyHolder);
+        LOG.info("New contact inserted with id: " + contact.getId());
     }
 
     @Override
     public void update(Contact contact) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("first_name", contact.getFirstName());
+        paramMap.put("last_name", contact.getLastName());
+        paramMap.put("birth_date", contact.getBirthDate());
+        paramMap.put("id", contact.getId());
 
+        updateContact.updateByNamedParam(paramMap);
+
+        LOG.info("Existing contact updated wi th id: " + contact.getId());
     }
 
     @Override
