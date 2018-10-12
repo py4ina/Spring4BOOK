@@ -34,6 +34,7 @@ public class JdbcContactDao implements ContactDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private UpdateContact updateContact;
     private InsertContact insertContact;
+    private InsertContactTelDetail insertContactTelDetail;
 
     @Override
     public List<Contact> findAll() {
