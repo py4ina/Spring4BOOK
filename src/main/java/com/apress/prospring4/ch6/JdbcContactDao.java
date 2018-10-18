@@ -73,9 +73,12 @@ public class JdbcContactDao implements ContactDao {
 
     @Override
     public List<Contact> findAllWithDetail() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
+
         String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type " +
                 "from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
-        return namedParameterJdbcTemplate.query(sql, new ContactWithDetailExtractor());
+
+        return jdbcTemplate.query(sql, new ContactWithDetailExtractor());
     }
 
     @Override
@@ -95,6 +98,35 @@ public class JdbcContactDao implements ContactDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         insertContact.updateByNamedParam(paramMap, keyHolder);
         LOG.info("New contact inserted with id: " + contact.getId());
+    }
+
+    @Override
+    public void insertWithDetail(Contact contact) {
+        insertContactTelDetail = new InsertContactTelDetail(dataSource);
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("first_name", contact.getFirstName());
+        paramMap.put("last_name", contact.getLastName());
+        paramMap.put("birth_date", contact.getBirthDate());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        insertContact.updateByNamedParam(paramMap, keyHolder);
+        contact.setId(keyHolder.getKey().longValue());
+
+        LOG.info("New contact inserted with id: " + contact.getId());
+
+        List<ContactTelDetail> contactTelDetails = contact.getContactTelDetails();
+
+        if (contactTelDetails != null) {
+            for (ContactTelDetail contactTelDetail : contactTelDetails) {
+                paramMap = new HashMap<>();
+                paramMap.put("contact_id", contact.getId());
+                paramMap.put("tel_type", contactTelDetail.getTelType());
+                paramMap.put("tel_number", contactTelDetail.getTelNumber());
+                insertContactTelDetail.updateByNamedParam(paramMap);
+            }
+        }
+        insertContactTelDetail.flush();
     }
 
     @Override

@@ -9,6 +9,9 @@ public interface ContactDao {
     String findLastNameById(Long id);
     String findFirstNameById(Long id);
     void insert(Contact contact);
+
+    void insertWithDetail(Contact contact);
+
     void update(Contact contact);
     void delete(Long contactId);
 }
