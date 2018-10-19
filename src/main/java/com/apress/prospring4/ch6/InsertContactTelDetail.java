@@ -15,9 +15,9 @@ public class InsertContactTelDetail extends BatchSqlUpdate {
     public InsertContactTelDetail(DataSource dataSource) {
         super(dataSource, SQL_INSERT_CONTACT_CEL);
 
-        super.declareParameter(new SqlParameter("first_name", Types.VARCHAR));
-        super.declareParameter(new SqlParameter("last_name", Types.VARCHAR));
-        super.declareParameter(new SqlParameter("birth_date", Types.DATE));
+        super.declareParameter(new SqlParameter("contact_id", Types.INTEGER));
+        super.declareParameter(new SqlParameter("tel_type", Types.VARCHAR));
+        super.declareParameter(new SqlParameter("tel_number", Types.VARCHAR));
 
         setBatchSize(BATCH_SIZE);
     }

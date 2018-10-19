@@ -86,6 +86,11 @@ public class PlainContactDao implements ContactDao {
     }
 
     @Override
+    public void insertWithDetail(Contact contact) {
+
+    }
+
+    @Override
     public void delete(Long contactId) {
         Connection connection = null;
         try{

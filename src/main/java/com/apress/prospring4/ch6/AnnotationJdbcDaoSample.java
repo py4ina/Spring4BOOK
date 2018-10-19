@@ -3,6 +3,7 @@ package com.apress.prospring4.ch6;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,15 +16,28 @@ public class AnnotationJdbcDaoSample {
         ContactDao contactDao = ctx.getBean("contactDao", ContactDao.class);
 
         Contact contact = new Contact();
-        contact.setId(1l);
-        contact.setFirstName("Chris");
-        contact.setLastName("John");
+        contact.setFirstName("Michael");
+        contact.setLastName("Jackson");
         contact.setBirthDate(new Date(
-                (new GregorianCalendar(1977, 10, 1)).getTime().getTime()));
+                (new GregorianCalendar(19, 10, 1)).getTime().getTime()));
 
-        contactDao.insert(contact);
+        List<ContactTelDetail> contactTelDetails = new ArrayList<>();
 
-        listContacts(contactDao.findAll());
+        ContactTelDetail contactTelDetail = new ContactTelDetail();
+        contactTelDetail.setTelType("Home");
+        contactTelDetail.setTelNumber("11111111");
+
+        contactTelDetails.add(contactTelDetail);
+
+        contactTelDetail = new ContactTelDetail();
+        contactTelDetail.setTelType("Mobile");
+        contactTelDetail.setTelNumber("222222222");
+
+        contactTelDetails.add(contactTelDetail);
+        contact.setContactTelDetails(contactTelDetails);
+        contactDao.insertWithDetail(contact);
+
+        listContacts(contactDao.findAllWithDetail());
     }
 
     private static void listContacts(List<Contact> contacts) {
