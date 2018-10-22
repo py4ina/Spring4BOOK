@@ -35,6 +35,7 @@ public class JdbcContactDao implements ContactDao {
     private UpdateContact updateContact;
     private InsertContact insertContact;
     private InsertContactTelDetail insertContactTelDetail;
+    private StoredFunctionFirstNameById storedFunctionFirstNameById;
 
     @Override
     public List<Contact> findAll() {
@@ -55,6 +56,7 @@ public class JdbcContactDao implements ContactDao {
         this.selectContactByFirstName = new SelectContactByFirstName(dataSource);
         this.updateContact = new UpdateContact(dataSource);
         this.insertContact = new InsertContact(dataSource);
+        this.storedFunctionFirstNameById = new StoredFunctionFirstNameById(dataSource);
     }
 
     public DataSource getDataSource(){
@@ -83,9 +85,8 @@ public class JdbcContactDao implements ContactDao {
 
     @Override
     public String findFirstNameById(Long id) {
-        return jdbcTemplate.queryForObject(
-                "select first_name from SPRING_4_BOOK.CONTACT where id = ?",
-                new Object[]{id}, String.class);
+        List<String> result = storedFunctionFirstNameById.execute(id);
+        return result.get(0);
     }
 
     @Override
