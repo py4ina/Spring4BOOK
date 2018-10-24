@@ -12,5 +12,20 @@
           p:username="${jdbc.username}"
           p:password="${jdbc.password}"
     />
+
+    <bean id="dbInit" class="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator">
+        <property name="scripts">
+            <list>
+                <value>META-INF/sql/stored-function.sql</value>
+            </list>
+        </property>
+        <property name="continueOnError" value="false"/>
+        <property name="separator" value="\\"/>
+    </bean>
+
+    <bean id="startupScripts" class="org.springframework.jdbc.datasource.init.DataSourceInitializer">
+        <property name="dataSource" ref="dataSource" />
+        <property name="databasePopulator" ref="dbInit"/>
+    </bean>
     <context:property-placeholder location="classpath:META-INF/config/jdbc.properties"/>
 </beans>

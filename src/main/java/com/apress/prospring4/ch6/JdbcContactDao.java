@@ -2,12 +2,9 @@ package com.apress.prospring4.ch6;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -30,7 +27,7 @@ public class JdbcContactDao implements ContactDao {
     private DataSource dataSource;
     private SelectAllContacts selectAllContacts;
     private SelectContactByFirstName selectContactByFirstName;
-    private JdbcTemplate jdbcTemplate;
+//    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private UpdateContact updateContact;
     private InsertContact insertContact;
@@ -49,40 +46,6 @@ public class JdbcContactDao implements ContactDao {
         return selectContactByFirstName.executeByNamedParam(paramMap);
     }
 
-    @Resource(name = "dataSource")
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.selectAllContacts = new SelectAllContacts(dataSource);
-        this.selectContactByFirstName = new SelectContactByFirstName(dataSource);
-        this.updateContact = new UpdateContact(dataSource);
-        this.insertContact = new InsertContact(dataSource);
-        this.storedFunctionFirstNameById = new StoredFunctionFirstNameById(dataSource);
-    }
-
-    public DataSource getDataSource(){
-        return dataSource;
-    }
-
-    @Override
-    public String findLastNameById(Long id) {
-        String sql = "select last_name from CONTACT where id = :contactId";
-
-        Map<String, Object> namedParameters = new HashMap<>();
-        namedParameters.put("contactId", id);
-
-        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
-    }
-
-    @Override
-    public List<Contact> findAllWithDetail() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
-
-        String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type " +
-                "from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
-
-        return jdbcTemplate.query(sql, new ContactWithDetailExtractor());
-    }
-
     @Override
     public String findFirstNameById(Long id) {
         List<String> result = storedFunctionFirstNameById.execute(id);
@@ -98,6 +61,8 @@ public class JdbcContactDao implements ContactDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         insertContact.updateByNamedParam(paramMap, keyHolder);
+        contact.setId(keyHolder.getKey().longValue());
+
         LOG.info("New contact inserted with id: " + contact.getId());
     }
 
@@ -131,6 +96,16 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
+    public List<Contact> findAllWithDetail() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
+
+        String sql = "select c.id, c.first_name, c.last_name, c.birth_date, t.id AS contact_tel_id, t.tel_number, t.tel_type " +
+                "from CONTACT as c join CONTACT_TEL_DETAIL as t on c.id = t.contact_id";
+
+        return jdbcTemplate.query(sql, new ContactWithDetailExtractor());
+    }
+
+    @Override
     public void update(Contact contact) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("first_name", contact.getFirstName());
@@ -143,21 +118,18 @@ public class JdbcContactDao implements ContactDao {
         LOG.info("Existing contact updated wi th id: " + contact.getId());
     }
 
-    @Override
-    public void delete(Long contactId) {
-
+    @Resource(name = "dataSource")
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.selectAllContacts = new SelectAllContacts(dataSource);
+        this.selectContactByFirstName = new SelectContactByFirstName(dataSource);
+        this.updateContact = new UpdateContact(dataSource);
+        this.insertContact = new InsertContact(dataSource);
+        this.storedFunctionFirstNameById = new StoredFunctionFirstNameById(dataSource);
     }
 
-    private static final class ContactMapper implements RowMapper<Contact> {
-        @Override
-        public Contact mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Contact contact = new Contact();
-            contact.setId(resultSet.getLong("id"));
-            contact.setFirstName(resultSet.getString("first_name"));
-            contact.setLastName(resultSet.getString("last_name"));
-            contact.setBirthDate(resultSet.getDate("birth_date"));
-            return contact;
-        }
+    public DataSource getDataSource(){
+        return dataSource;
     }
 
     private static final class ContactWithDetailExtractor implements ResultSetExtractor<List<Contact>> {
@@ -168,7 +140,8 @@ public class JdbcContactDao implements ContactDao {
 
             while (rs.next()){
                 Long id = rs. getLong ( "id");
-                contact = map. get ( id) ;
+                contact = map. get ( id);
+
                 if (contact == null) {
                     contact = new Contact();
                     contact.setId(id);
@@ -176,6 +149,7 @@ public class JdbcContactDao implements ContactDao {
                     contact.setLastName(rs.getString("last_name"));
                     contact.setBirthDate(rs.getDate("birth_date"));
                     contact.setContactTelDetails(new ArrayList<>());
+
                     map.put(id, contact);
                 }
                 Long contactTelDetailId = rs. getLong ( "contact_tel_id");
@@ -191,5 +165,20 @@ public class JdbcContactDao implements ContactDao {
 
             return new ArrayList<>(map.values());
         }
+    }
+
+    @Override
+    public String findLastNameById(Long id) {
+        String sql = "select last_name from CONTACT where id = :contactId";
+
+        Map<String, Object> namedParameters = new HashMap<>();
+        namedParameters.put("contactId", id);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
+    }
+
+    @Override
+    public void delete(Long contactId) {
+
     }
 }
