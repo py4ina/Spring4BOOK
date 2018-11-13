@@ -3,6 +3,8 @@ package com.apress.prospring4.ch7;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -14,6 +16,8 @@ public class Contact implements Serializable {
     private String firstName;
     private String lastName;
     private Date birthDate;
+    private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
+    private Set<Hobby> hobbies = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -62,6 +66,31 @@ public class Contact implements Serializable {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<ContactTelDetail> getContactTelDetails() {
+        return contactTelDetails;
+    }
+
+    public void setContactTelDetails(Set<ContactTelDetail> contactTelDetails) {
+        this.contactTelDetails = contactTelDetails;
+    }
+
+    public void removeContactTelDetails(ContactTelDetail contactTelDetail) {
+        getContactTelDetails().remove(contactTelDetail);
+    }
+
+    @ManyToMany
+    @JoinTable(name = "contact_hobby_detail",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "hobby_id"))
+    public Set<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(Set<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 
     @Override

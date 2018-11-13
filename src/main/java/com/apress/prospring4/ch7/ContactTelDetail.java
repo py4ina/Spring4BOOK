@@ -12,6 +12,7 @@ public class ContactTelDetail implements Serializable {
     private int version;
     private String telType;
     private String telNumber;
+    private Contact contact;
 
     public ContactTelDetail() {}
 
@@ -57,5 +58,15 @@ public class ContactTelDetail implements Serializable {
 
     public void setTelNumber(String telNumber) {
         this.telNumber = telNumber;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "contact_id")
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }
