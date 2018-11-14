@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ContactDao {
     List<Contact> findAll();
-    List<Contact> findAllWithDetail();
+    List findAllWithDetail();
     Contact findById(Long id);
     Contact save(Contact contact);
     void delete(Long contactId);

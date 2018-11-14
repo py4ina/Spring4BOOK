@@ -24,23 +24,26 @@ public class ContactDaoImpl implements ContactDao {
         this.sessionFactory = sessionFactory;
     }
 
+
     @Override
-    public List<com.apress.prospring4.ch7.Contact> findAll() {
+    @Transactional(readOnly = true)
+    public List<Contact> findAll() {
+        return sessionFactory.getCurrentSession().createQuery("from Contact c").list();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Contact> findAllWithDetail() {
+        return sessionFactory.getCurrentSession().getNamedQuery("Contact.findAllWithDetail").list();
+    }
+
+    @Override
+    public Contact findById(Long id) {
         return null;
     }
 
     @Override
-    public List<com.apress.prospring4.ch7.Contact> findAllWithDetail() {
-        return null;
-    }
-
-    @Override
-    public com.apress.prospring4.ch7.Contact findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public com.apress.prospring4.ch7.Contact save(com.apress.prospring4.ch7.Contact contact) {
+    public Contact save(Contact contact) {
         return null;
     }
 
