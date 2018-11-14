@@ -38,13 +38,17 @@ public class ContactDaoImpl implements ContactDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contact findById(Long id) {
-        return null;
+        return (Contact) sessionFactory.getCurrentSession().getNamedQuery("Contact.findById")
+                .setParameter("id", id).uniqueResult();
     }
 
     @Override
     public Contact save(Contact contact) {
-        return null;
+        sessionFactory.getCurrentSession().saveOrUpdate(contact);
+        Log.info("Contact saved with id: " + contact.getId());
+        return contact;
     }
 
     @Override

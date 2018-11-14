@@ -11,6 +11,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "contact")
 @NamedQueries({
+        @NamedQuery(name = "Contact.findById",
+                query = "select distinct c from Contact c " +
+                        "left join fetch c.contactTelDetails t " +
+                        "left join fetch c.hobbies h where c.id = :id"),
+
         @NamedQuery(name = "Contact.findAllWithDetail",
                 query = "select distinct c from Contact c " +
                         "left join fetch c.contactTelDetails t " +
@@ -81,6 +86,11 @@ public class Contact implements Serializable {
 
     public void setContactTelDetails(Set<ContactTelDetail> contactTelDetails) {
         this.contactTelDetails = contactTelDetails;
+    }
+
+    public void addContactTelDetails(ContactTelDetail contactTelDetail) {
+        contactTelDetail.setContact(this);
+        getContactTelDetails().add(contactTelDetail);
     }
 
     public void removeContactTelDetails(ContactTelDetail contactTelDetail) {

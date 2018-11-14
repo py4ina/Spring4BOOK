@@ -2,6 +2,7 @@ package com.apress.prospring4.ch7;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import java.util.Date;
 import java.util.List;
 
 public class SpringHibernateSample {
@@ -11,6 +12,18 @@ public class SpringHibernateSample {
         ctx.refresh();
 
         ContactDao contactDao = ctx.getBean("contactDao", ContactDao.class);
+
+        Contact contact = new Contact();
+        contact.setFirstName("Michael");
+        contact.setLastName("Jackson");
+        contact.setBirthDate(new Date());
+
+        ContactTelDetail contactTelDetail = new ContactTelDetail("Home", "11111111");
+        contact.addContactTelDetails(contactTelDetail);
+        contactTelDetail = new ContactTelDetail("Mobile", "22222222222");
+        contact.addContactTelDetails(contactTelDetail);
+
+        contactDao.save(contact);
         listContactsWithDetail(contactDao.findAllWithDetail());
     }
 
@@ -23,12 +36,12 @@ public class SpringHibernateSample {
 
             if (contact.getContactTelDetails() != null) {
                 for(ContactTelDetail contactTelDetail: contact.getContactTelDetails()) {
-                    System.out.println(contactTelDetail);
+                    System.out.println(contactTelDetail.toString());
                 }
             }
             if (contact.getHobbies() != null) {
                 for (Hobby hobby: contact.getHobbies()) {
-                    System.out.println(hobby);
+                    System.out.println(hobby.toString());
                 }
             }
             System.out.println("-----------------------------------");
