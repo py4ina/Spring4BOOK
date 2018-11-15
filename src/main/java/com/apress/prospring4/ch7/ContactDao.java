@@ -7,5 +7,5 @@ public interface ContactDao {
     List findAllWithDetail();
     Contact findById(Long id);
     Contact save(Contact contact);
-    void delete(Long contactId);
+    void delete(Contact contact);
 }

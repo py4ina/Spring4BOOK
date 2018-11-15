@@ -4,6 +4,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class SpringHibernateSample {
     public static void main(String[] args) {
@@ -13,17 +14,10 @@ public class SpringHibernateSample {
 
         ContactDao contactDao = ctx.getBean("contactDao", ContactDao.class);
 
-        Contact contact = new Contact();
-        contact.setFirstName("Michael");
-        contact.setLastName("Jackson");
-        contact.setBirthDate(new Date());
+        Contact contact = contactDao.findById(1l);
 
-        ContactTelDetail contactTelDetail = new ContactTelDetail("Home", "11111111");
-        contact.addContactTelDetails(contactTelDetail);
-        contactTelDetail = new ContactTelDetail("Mobile", "22222222222");
-        contact.addContactTelDetails(contactTelDetail);
+        contactDao.delete(contact);
 
-        contactDao.save(contact);
         listContactsWithDetail(contactDao.findAllWithDetail());
     }
 

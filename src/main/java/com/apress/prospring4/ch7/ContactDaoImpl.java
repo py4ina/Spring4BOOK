@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,6 +35,7 @@ public class ContactDaoImpl implements ContactDao {
     @Override
     @Transactional(readOnly = true)
     public List<Contact> findAllWithDetail() {
+        Log.info("All contacts");
         return sessionFactory.getCurrentSession().getNamedQuery("Contact.findAllWithDetail").list();
     }
 
@@ -46,13 +48,14 @@ public class ContactDaoImpl implements ContactDao {
 
     @Override
     public Contact save(Contact contact) {
-        sessionFactory.getCurrentSession().saveOrUpdate(contact);
+        sessionFactory.getCurrentSession().saveOrUpdate("Contact", contact);
         Log.info("Contact saved with id: " + contact.getId());
         return contact;
     }
 
     @Override
-    public void delete(Long contactId) {
-
+    public void delete(Contact contact) {
+        sessionFactory.getCurrentSession().delete(contact);
+        Log.info("Contact deleted with id: " + contact.getId());
     }
 }
