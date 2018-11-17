@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Spring-4-BOOK" />
+        <module name="Spring4BOOK" />
       </profile>
     </annotationProcessing>
   </component>
