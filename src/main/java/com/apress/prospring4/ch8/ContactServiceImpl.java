@@ -9,12 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Service("jpaContactService")
 @Repository
 @Transactional
 public class ContactServiceImpl implements ContactService {
+
+    final static String ALL_CONTACT_NATIVE_QUERY = "select id, first_name, last_name, birth_date, version " +
+            "from SPRING_4_BOOK.contact";
 
     private Log log = LogFactory.getLog(ContactServiceImpl.class);
     @PersistenceContext
@@ -55,6 +59,41 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void delete(Contact contact) {
+        Contact mergedContact = em.merge(contact);
+        em.remove(mergedContact);
+        log.info("Contact with id: " + contact.getId() + " deleted successfully");
+    }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<Contact> findAllByNativeQuery() {
+        return em.createNativeQuery(ALL_CONTACT_NATIVE_QUERY,
+                "contactResult")
+                .getResultList();
+    }
+
+    @Override
+    public List<Contact> findByCriteriaQuery(String firstName, String lastName) {
+        log.info ( "Finding contact for firstName: " + firstName + " and lastName: " + lastName);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Contact> criteriaQuery = cb.createQuery(Contact.class);
+        Root<Contact> contactRoot = criteriaQuery.from(Contact.class);
+        contactRoot.fetch(Contact_.contactTelDetails, JoinType.LEFT);
+        contactRoot.fetch(Contact_.hobbies, JoinType.LEFT);
+        criteriaQuery.select(contactRoot).distinct(true);
+        Predicate criteria = cb.conjunction();
+
+        if (firstName != null) {
+            Predicate p = cb.equal(contactRoot.get(Contact_.firstName), firstName);
+            criteria = cb.and(criteria, p);
+        }
+
+        if (lastName != null) {
+            Predicate p = cb.equal(contactRoot.get(Contact_.lastName), lastName);
+            criteria = cb.and(criteria, p);
+        }
+
+        criteriaQuery.where(criteria);
+        return em.createQuery(criteriaQuery).getResultList();
     }
 }

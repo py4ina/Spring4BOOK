@@ -1,4 +1,4 @@
-package com.apress.prospring4.XML_SAX;
+package com.apress.XML_SAX;
 
 import javax.xml.parsers.*;
 import org.xml.sax.*;

@@ -27,6 +27,9 @@ import static javax.persistence.GenerationType.IDENTITY;
                         "left join fetch c.contactTelDetails t " +
                         "left join fetch c.hobbies h")
 })
+@SqlResultSetMapping(name = "contactResult",
+        entities = @EntityResult(entityClass = Contact.class)
+)
 public class Contact implements Serializable {
     private Long id;
     private int version;
