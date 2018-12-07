@@ -1,8 +1,5 @@
 package com.apress.prospring4.ch8;
 
-//import com.apress.prospring4.ch7.ContactTelDetail;
-//import com.apress.prospring4.ch7.Hobby;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

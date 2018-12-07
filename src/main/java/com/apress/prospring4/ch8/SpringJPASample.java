@@ -11,8 +11,8 @@ public class SpringJPASample {
         ctx.refresh();
 
         ContactService contactService =
-                ctx.getBean("jpaContactService", ContactService.class);
-        listContacts(contactService.findAllByNativeQuery());
+                ctx.getBean("springJpaContactService", ContactService.class);
+        listContacts(contactService.findAll());
 
     }
 
