@@ -33,3 +33,18 @@ CREATE TABLE if not exists contact_hobby_detail (
   REFERENCES hobby (hobby_id)
 );
 
+CREATE TABLE if not exists  contact_audit (
+  id                 INT         NOT NULL AUTO_INCREMENT,
+  first_name         VARCHAR(60) NOT NULL,
+  last_name          VARCHAR(40) NOT NULL,
+  birth_date         DATE,
+  version            INT         NOT NULL DEFAULT 0,
+
+  created_by         VARCHAR(20),
+  created_date       TIMESTAMP,
+  last_modified_by   VARCHAR(20),
+  last_modified_date TIMESTAMP NULL DEFAULT NULL,
+  UNIQUE uq_contact_audit_1 (first_name, last_name),
+  PRIMARY KEY (id)
+);
+

@@ -68,7 +68,7 @@ public class Contact implements Serializable {
         this.firstName = firstName;
     }
 
-    @Column(name = "last_name")
+    @Column(name = "first_name")
     public String getLastName() {
         return lastName;
     }
