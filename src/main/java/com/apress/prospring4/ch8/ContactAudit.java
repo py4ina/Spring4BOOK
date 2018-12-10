@@ -54,7 +54,7 @@ public class ContactAudit implements Auditable<String, Long>, Serializable {
         this.firstName = firstName;
     }
 
-    @Column(name = "first_name")
+    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
