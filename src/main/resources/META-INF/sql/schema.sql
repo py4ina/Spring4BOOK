@@ -48,3 +48,29 @@ CREATE TABLE if not exists  contact_audit (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE if not exists  contact_audit_h (
+  id                 INT         NOT NULL AUTO_INCREMENT,
+  first_name         VARCHAR(60) NOT NULL,
+  last_name          VARCHAR(40) NOT NULL,
+  birth_date         DATE,
+  version            INT         NOT NULL DEFAULT 0,
+
+  created_by         VARCHAR(20),
+  created_date       TIMESTAMP,
+  last_modified_by   VARCHAR(20),
+  last_modified_date TIMESTAMP NULL DEFAULT NULL,
+
+  audit_revision      INT NOT NULL ,
+  action_type         INT,
+  audit_revision_end  INT,
+  audit_revision_end_ts  TIMESTAMP  NULL,
+  UNIQUE uq_contact_audit_1 (first_name, last_name),
+  PRIMARY KEY (id, audit_revision)
+);
+
+CREATE TABLE if not exists  revinfo (
+  revtstmp BIGINT NOT NULL,
+  rev INT NOT NULL AUTO_INCREMENT,
+  primary key (rev)
+);
+

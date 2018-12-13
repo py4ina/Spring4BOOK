@@ -14,31 +14,27 @@ public class SpringJPASample {
         ContactAuditService contactAuditService =
                 ctx.getBean("contactAuditService", ContactAuditService.class);
 
-        List<ContactAudit> contacts = contactAuditService.findAll();
-        listContacts(contacts);
 
         System.out.println("Add new Contact");
         ContactAudit contact = new ContactAudit();
-        contact.setFirstName("Michail");
-        contact.setLastName("Jackson");
+        contact.setFirstName("Michail5");
+        contact.setLastName("Jackson5");
         contact.setBirthDate(new Date());
-
         contactAuditService.save(contact);
 
-        contacts = contactAuditService.findAll();
-        listContacts(contacts);
+        listContacts(contactAuditService.findAll());
 
-        contact = contactAuditService.findById(2l);
         System.out.println("--------------");
         System.out.println("Contact with id: " + contact.getId() + " is contact -> " + contact);
         System.out.println("--------------");
 
-        System.out.println("Print update Contact");
-        contact.setFirstName("Tom");
+        contact.setFirstName("Tom5");
         contactAuditService.save(contact);
 
-        contacts = contactAuditService.findAll();
-        listContacts(contacts);
+        ContactAudit oldContact = contactAuditService.findAuditByRevision(contact.getId(), 1);
+        System.out.println(oldContact);
+        ContactAudit oldContact2 = contactAuditService.findAuditByRevision(contact.getId(), 2);
+        System.out.println(oldContact2);
     }
 
     private static void listContacts(List<ContactAudit> contacts) {
