@@ -4,6 +4,7 @@ CREATE TABLE if not exists contact (
   first_name VARCHAR(60) NOT NULL ,
   last_name VARCHAR (40) NOT NULL ,
   birth_date DATE ,
+  version INT NOT NULL DEFAULT 0,
   UNIQUE uq_contact_1 (first_name, last_name),
   PRIMARY KEY (id)
 );
