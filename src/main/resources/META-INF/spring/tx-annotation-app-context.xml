@@ -14,7 +14,7 @@
           class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name = "driverClassName" value = "com.mysql.jdbc.Driver"/>
         <property name = "url" value = "jdbc:mysql://localhost:3306/SPRING_4_BOOK"/>
-        <property name = "username" value = "py4ina"/>
+        <property name = "username" value = "root"/>
         <property name = "password" value = "Reper245!"/>
     </bean>
 

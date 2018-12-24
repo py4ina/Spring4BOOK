@@ -4,15 +4,13 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service("contactService")
 @Repository
-@Transactional
 public class ContactServiceImpl implements ContactService {
-
     private ContactRepository contactRepository;
+
     @Autowired
     public void setContactRepository(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
@@ -25,16 +23,16 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact findById(Long id) {
-        return null;
+        return contactRepository.findOne(id);
     }
 
     @Override
     public Contact save(Contact contact) {
-        return null;
+        return contactRepository.save(contact);
     }
 
     @Override
     public long countAll() {
-        return 0;
+        return contactRepository.countAllContacts();
     }
 }
