@@ -202,6 +202,12 @@
             <version>1.7.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.atomikos/transactions-jdbc -->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jdbc</artifactId>
+            <version>3.9.3</version>
+        </dependency>
 
 
     </dependencies>
