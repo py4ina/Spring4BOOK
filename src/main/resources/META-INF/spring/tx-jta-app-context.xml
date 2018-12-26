@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="dataSourceA" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
         <property name="uniqueResourceName" value="XADBMSA"/>
@@ -42,10 +48,35 @@
                 <prop key="hibernate.max_fetch_depth">3</prop>
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
                 <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>
 
+    <bean id="emfA" parent="emfBase">
+        <property name="dataSource" ref="dataSourceA"/>
+        <property name="persistenceUnitName" value="emfA"/>
+    </bean>
 
+    <bean id="emfB" parent="emfBase">
+        <property name="dataSource" ref="dataSourceB"/>
+        <property name="persistenceUnitName" value="emfB"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+        <property name="forceShutdown" value="true"/>
+    </bean>
+
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager"/>
+        <property name="userTransaction" ref="atomikosUserTransaction"/>
+    </bean>
+    <context:component-scan base-package="com.apress.prospring4.ch9"/>
 
 </beans>
