@@ -209,6 +209,14 @@
             <version>3.9.3</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.atomikos/transactions-hibernate3 -->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-hibernate3</artifactId>
+            <version>3.6.4</version>
+        </dependency>
+
+
 
     </dependencies>
 
