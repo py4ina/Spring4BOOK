@@ -9,7 +9,10 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="dataSourceA" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+    <bean id="dataSourceA"
+          class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init"
+          destroy-method="close">
         <property name="uniqueResourceName" value="XADBMSA"/>
         <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
         <property name="xaProperties">

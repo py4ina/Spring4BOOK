@@ -213,9 +213,8 @@
         <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions-hibernate3</artifactId>
-            <version>3.6.4</version>
+            <version>4.0.6</version>
         </dependency>
-
 
 
     </dependencies>
